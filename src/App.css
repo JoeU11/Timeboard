@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 3%;
 }
 
 .modal {
@@ -35,4 +38,8 @@
   position: absolute;
   top: 0em;
   right: 0.2em;
+}
+
+.fc-timegrid-slot-lane {
+  background-color: white;
 }
