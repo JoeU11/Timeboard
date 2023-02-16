@@ -1,0 +1,55 @@
+#pickTasks-container {
+  display: flex;
+  margin: auto;
+  gap: 20%;
+  align-items: start;
+  justify-content: center;
+}
+
+.time-estimate-list {
+  list-style-type: none;
+}
+
+.time-estimate-input {
+  width: 30%;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  margin-top: 15px;
+}
+
+.task-input {
+  width: 200%;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  margin-top: 15px;
+}
+
+.pickTasks-background {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.pickTasks-main {
+  position: fixed;
+  background: white;
+  width: 70%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1em;
+}
+
+.pickTasks-main button.close {
+  position: absolute;
+  bottom: 1.2em;
+  right: 1em;
+}
