@@ -19,6 +19,7 @@ export default class DemoApp extends React.Component {
         scrollTime='07:00:00' // set to current time
         slotMinTime="06:00:00"
         slotMaxTime="22:00:00"
+        initialEvents={this.props.events}
       />
     )
   }
