@@ -2,35 +2,30 @@ import React, { useState } from 'react'
 import './pickTasks.css'
 
 export default function PickTasks(props) {
-  // const [tasks, setTasks] = useState([{ id: 1, task: null, timeEstimate: null }, { id: 2, task: null, timeEstimate: null }, { id: 3, task: null, timeEstimate: null }])
+
 
   function handleSubmit(event) {
     console.log("blocking off time for tasks")
     event.preventDefault()
     const formData = new FormData(event.target)
-    console.log(formData)
-    const newTasks = []
-    for (const value of formData) {
-      console.log(value);
-    }
+    props.onSubmit(formData)
   }
 
-  function addTaskRow(event) {
+  function handleAddRow(event) {
     console.log("adding row")
     event.preventDefault()
-    // setTasks([...tasks, { id: tasks.length + 1, task: null, timeEstimate: null }])
-    // console.log(tasks)
+    props.onAddRow(event)
   }
 
   const pickTaskElements = props.tasks.map(task => {
     return (
-      <li key={task.id}><input type="text" name={`task${task.id}Description`} className="task-input"></input></li>
+      <li key={task.id}><input type="text" name={`task_${task.id}_description`} className="task-input"></input></li>
     )
   })
 
   const pickTimeEstimates = props.tasks.map(task => {
     return (
-      <li key={task.id} className="time-estimate-list"><input type="text" name={`task${task.id}timeEstimate`} className="time-estimate-input"></input></li>
+      <li key={task.id} className="time-estimate-list"><input type="text" name={`task_${task.id}_timeEstimate`} className="time-estimate-input"></input></li>
     )
   })
 
@@ -52,7 +47,7 @@ export default function PickTasks(props) {
               {pickTimeEstimates}
             </div>
           </div>
-          <button className="add" onClick={addTaskRow}>Add more</button>
+          <button className="add" onClick={handleAddRow}>Add row</button>
           <button className="close" type="submit">Submit</button>
         </form >
       </section>
