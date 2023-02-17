@@ -8,12 +8,13 @@ function App() {
   // HARDCODED EVENT FROM DOCUMENTATION
 
   // let eventGuid = 0
-  let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+  // let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
   // const [tasks, setTasks] = useState([
   //   {
   //     id: createEventId(),
   //     title: 'Timed event',
   //     start: todayStr + 'T12:00:00'
+  //     end: todayStr + 'T13:00:00'
   //   }
   // ])
 
@@ -26,7 +27,26 @@ function App() {
   const [hideModal, setHideModal] = useState(false)
   const [taskEvents, setTaskEvents] = useState(null)
   let currentDate = new Date();
-  let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+  let todayStr = currentDate.toISOString().replace(/T.*$/, '') // YYYY-MM-DD of today
+  var hours = ""
+  var minutes = ""
+
+  if (currentDate.getHours().toString() < 10) {
+    hours = '0' + currentDate.getHours().toString()
+  }
+  else {
+    hours = currentDate.getHours().toString()
+  }
+  if (currentDate.getMinutes().toString() < 10) {
+    minutes = '0' + currentDate.getMinutes().toString()
+  }
+  else {
+    minutes = currentDate.getMinutes().toString()
+  }
+
+
+  let time = hours + ":" + minutes
+  console.log(time)
 
   const handleUserTasks = (userTasks) => {
     setHideModal(true)
@@ -34,13 +54,10 @@ function App() {
     let timeOffset = 1
     setTasks(tasks.map(task => {
       task.title = userTasks.get(`task_${i}_description`)
-      task.timeEstimate = userTasks.get(`task_${i}_timeEstimate`)
-
-
-      console.log(replaceAt(time, 1, (parseInt(time[1]) + timeOffset).toString()))
-
-      task.start = todayStr + `T${replaceAt(time, 1, (parseInt(time[1]) + timeOffset).toString())}`
-      timeOffset++
+      task.timeEstimate = parseInt(userTasks.get(`task_${i}_timeEstimate`))
+      task.start = calcStart(timeOffset)
+      task.end = calcEnd(task.start, task.timeEstimate)
+      timeOffset++ //TODO: adjust to account for previous event duration
       i++
     }))
     setTaskEvents(
@@ -48,8 +65,34 @@ function App() {
     )
   }
 
+  function calcStart(timeOffset) {
+    // returns a startTime that is local time + timeOffset (note: only modifies the hour currently)
+    let newHours = parseInt(time.slice(0, 2)) + timeOffset
+    if (newHours < 10) {
+      newHours = "0" + newHours.toString()
+    }
+    else {
+      newHours = newHours.toString()
+    }
+
+    var startTime = `T${replaceAt(time, 0, newHours)}`
+    return todayStr + startTime
+  }
+
+  function calcEnd(startTime, duration) {
+    // returns and endTime that is startTime + duration (note: only modifies the hour currently)
+    let newHours = parseInt(startTime.slice(11, 13)) + duration
+    if (newHours < 10) {
+      newHours = "0" + newHours.toString()
+    }
+    else {
+      newHours = newHours.toString()
+    }
+    var endTime = replaceAt(startTime, 11, newHours)
+    return endTime
+  }
+
   function replaceAt(string, index, replacement) {
-    console.log(string)
     return string.substring(0, index) + replacement + string.substring(index + replacement.length);
   }
 
